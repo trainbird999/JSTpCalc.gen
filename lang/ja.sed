@@ -23,7 +23,7 @@ s/##__text_rate_calculation__##/\
       <式> 730 × 容量 ÷ 運行頻度(秒) ＝ レート(年)<BR>\
     /
 
-s/##__input_demand__##/需要を入力/g
-s/##__input_capacity__##/容量を入力/g
-s/##__input_frequency__##/頻度\(秒\)を入力/g
+s/##__input_demand__##/需要(和)を入力/g
+s/##__input_capacity__##/貨物容量を入力/g
+s/##__input_frequency__##/運行頻度\(秒\)を入力/g
 s/##__button_do_it_now__##/算出/g
