@@ -1,2 +1,5 @@
 # JSTpCalc.gen
-JSTpCalc generation project(testing)
+html generation project and repository for JSTpCalc
+
+# Requirements
+**Sed** --- Stream editor
