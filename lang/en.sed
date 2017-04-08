@@ -18,8 +18,8 @@ s/##__text_capacity_calculation__##/\
     /
 s/##__title_rate_calculation__##/Rate Calculation/
 s/##__text_rate_calculation__##/\
-      Calculates a rate for power of transportation that your line has in year averrage.<BR>\
-      This calculation is usable for supply chaining and check how amount your current line can bring cargos in year averrage.<BR>\
+      Calculates a rate for power of transportation that your line has in year average.<BR>\
+      This calculation is usable for supply chaining and check how amount your current line can bring cargos in year average.<BR>\
       Also, the calculation output will be got close to your input which used in Frequency and Capacity Calculations.<BR>\
       \&lt;exp\&gt; 730 × Capacity ÷ Frequency(in sec) ＝ Rate(cargos per year)<BR>\
     /
