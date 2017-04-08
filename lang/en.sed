@@ -4,7 +4,7 @@ s/##__text_frequency_calculation__##/\
       Your line going closer to calculated result will get more benefits.<BR>\
       Your line going over from calculated result to larger will more lose your money.<BR>\
       This calculation is useful for static capacity vehicle line like buses, ships and air planes.<BR>\
-      \&lt;exp\&gt; 730 × Capacity ÷Ddemand(s) ＝ Frequency(in sec)<BR>\
+      \&lt;exp\&gt; 730 × Capacity ÷ Demand(s) ＝ Frequency(in sec)<BR>\
     /
 
 s/##__title_capacity_calculation__##/Capacity Calculation/
@@ -24,6 +24,6 @@ s/##__text_rate_calculation__##/\
       \&lt;exp\&gt; 730 × Capacity ÷ Frequency(in sec) ＝ Rate(cargos per year)<BR>\
     /
 s/##__input_demand__##/input your demand/g
-s/##__input_capacity__##/input your capacity/g
-s/##__input_frequency__##/input your frequency/g
+s/##__input_capacity__##/input cargo capacity/g
+s/##__input_frequency__##/input line frequency/g
 s/##__button_do_it_now__##/Do it now/g
