@@ -25,18 +25,58 @@
           button:hover {background: #ffc618;}
           input {background: #3e4a60; color: #d89ed2; font-size: 101%; text-align: center; border-style: none;}
           body.darktheme {color: #eeeeee;background: #2e3a50;}
+          form.rightalign {text-align: right};
         -->
     </style>
   </head>
   <body class="darktheme">
     <script type="text/javascript">
       <!--
-          sec_per_oneday = 2
-          sec_per_year = sec_per_oneday * 365
+          function sec_per_oneday() {
+          return parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
+          }
+          
+          function sec_per_year() {
+          return sec_per_oneday() * 365;
+          }
 
           function calcfrequency(capacities, demands) {
-          return sec_per_year * capacities / demands;
+          return sec_per_year() * capacities / demands;
           }
+
+          function select_elementsubset_by_id(collection, id) {
+            function selecter(collection, id, new_array, n) {
+              if (collection.length == n) {
+                return new_array;
+              } else {
+                var element = collection[n];
+                if (element.id == id) {
+                  new_array.push(element);
+                  return selecter(collection, id, new_array, n + 1);
+                }
+              }
+            }
+            return selecter(collection, id, [], 0);
+          }
+
+          function change_text(array, str) {
+            function changer(array, str, n) {
+              if (array.length == n) {
+                return;
+              } else {
+                array[n].textContent = str;
+                return changer(array, str, n + 1);
+              }
+            }
+            console.log(array);
+            changer(array, str, 0);
+          }
+
+          function changespy(spy) {
+            var array = select_elementsubset_by_id(document.getElementsByTagName("SPAN"), "span_spy");
+            change_text(array, spy);
+          }
+          
 
           function showfreq() {
           var demands    = parseFloat(document.calcfreq.demands.value);
@@ -47,7 +87,7 @@
           function calccapacity(demands, frequencies) {
           var demands     = parseFloat(document.calccap.demands.value);
           var frequencies = parseFloat(document.calccap.frequencies.value);
-          return demands * frequencies / sec_per_year;
+          return demands * frequencies / sec_per_year();
           }
 
           function showcap() {
@@ -57,7 +97,7 @@
           }
 
           function calcrate(capacities, frequencies) {
-          return sec_per_year * capacities / frequencies;
+          return sec_per_year() * capacities / frequencies;
           }
 
           function showrate() {
@@ -67,12 +107,26 @@
           }
           // -->
     </script>
-    
+
+      <form name="ms_per_day" class="rightalign">
+        <label   for="ms_choosen">##__select_your_game_s_spy__##</label>
+        <select name="ms_value" onChange="changespy(sec_per_year())">
+          <option value="2000">2##__sec_notation_and_default__##</option>
+          <option value="1000">1##__sec_notation__##</option>
+          <option value="3000">3##__sec_notation__##</option>
+          <option value="4000">4##__sec_notation__##</option>
+          <option value="5000">5##__sec_notation__##</option>
+          <option value="6000">6##__sec_notation__##</option>
+          <option value="7000">7##__sec_notation__##</option>
+          <option value="8000">8##__sec_notation__##</option>
+        </select>
+      </form>
+      
     
     <H2>##__title_frequency_calculation__##</H2>
     <p>##__text_frequency_calculation__##</p>
     <form name="calcfreq" action="#">
-      730 × 
+      <span id="span_spy">730</span> × 
       <input type="text" name="capacities" placeholder="##__input_capacity__##">
        ÷ 
       <input type="text" name="demands"    placeholder="##__input_demand__##">
@@ -88,7 +142,7 @@
       <input type="text" name="demands"     placeholder="##__input_demand__##">
        × 
       <input type="text" name="frequencies" placeholder="##__input_frequency__##">
-      ÷ 730
+      ÷ <span id="span_spy">730</span>
       ＝
       <button type="button" onclick="showcap()">##__button_do_it_now__##</button>
       <input type="text" name="result"      placeholder="">
@@ -98,7 +152,7 @@
     <H2>##__title_rate_calculation__##</H2>
     <p>##__text_rate_calculation__##</p>
     <form name="calcrate" action="#">
-      730 × 
+      <span id="span_spy">730</span> × 
       <input type="text" name="capacities"  placeholder="##__input_capacity__##">
        ÷ 
       <input type="text" name="frequencies" placeholder="##__input_frequency__##">
