@@ -3,39 +3,39 @@
   <meta charset="UTF-8">
   <!-- Copyright (C) 2017 trainbird999
 
-      This program is free software: you can redistribute it and/or modify
-      it under the terms of the GNU General Public License as published by
-      the Free Software Foundation, either version 3 of the License, or
-      (at your option) any later version.
-      
-      This program is distributed in the hope that it will be useful,
-      but WITHOUT ANY WARRANTY; without even the implied warranty of
-      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-      GNU General Public License for more details.
-      
-      You should have received a copy of the GNU General Public License
-      along with this program.  If not, see <http://www.gnu.org/licenses/>.
-    -->
+       This program is free software: you can redistribute it and/or modify
+       it under the terms of the GNU General Public License as published by
+       the Free Software Foundation, either version 3 of the License, or
+       (at your option) any later version.
+
+       This program is distributed in the hope that it will be useful,
+       but WITHOUT ANY WARRANTY; without even the implied warranty of
+       MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+       GNU General Public License for more details.
+
+       You should have received a copy of the GNU General Public License
+       along with this program.  If not, see <http://www.gnu.org/licenses/>.
+     -->
   <head>
     <title>JS Tpcalc - Transport Fever Caluculation Support Utility</title>
     <style type="text/css">
-      <!--
-          H2 {color: #ffb608;}
-          button {background: #b0b7c1; color: #2e3a50; border-style: none; border-radius: 7.5px;}
-          button:hover {background: #ffc618;}
-          input {background: #3e4a60; color: #d89ed2; font-size: 101%; text-align: center; border-style: none;}
-          body.darktheme {color: #eeeeee;background: #2e3a50;}
-          form.rightalign {text-align: right};
-        -->
+     <!--
+     H2 {color: #ffb608;}
+     button {background: #b0b7c1; color: #2e3a50; border-style: none; border-radius: 7.5px;}
+     button:hover {background: #ffc618;}
+     input {background: #3e4a60; color: #d89ed2; font-size: 101%; text-align: center; border-style: none;}
+     body.darktheme {color: #eeeeee;background: #2e3a50;}
+     form.rightalign {text-align: right};
+     -->
     </style>
   </head>
   <body class="darktheme">
     <script type="text/javascript">
      <!--
-     function sec_per_oneday() {
-       return parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
-     }
-          
+                                   function sec_per_oneday() {
+                                     return parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
+                                   }
+
      function sec_per_year() {
        return sec_per_oneday() * 365;
      }
@@ -87,12 +87,12 @@
      function constructSelectMenu() {
        var newElementRoot = document.createElement("span");
        newElementRoot.id = "target_span_menu_switch";
-       
+
        var newLabel = document.createElement("label");
        newLabel.for = "ms_value";
        newLabel.textContent = "##__select_your_game_s_spy__## : ";
        newElementRoot.appendChild(newLabel);
-            
+
        var newSelect = document.createElement("select");
        newSelect.id = "ms_value";
        newSelect.name = "ms_value";
@@ -138,34 +138,34 @@
        }
      }
 
-          function showfreq() {
-          var demands    = parseFloat(document.calcfreq.demands.value);
-          var capacities = parseFloat(document.calcfreq.capacities.value);
-          document.calcfreq.result.value = calcfrequency(capacities, demands);
-          }
+     function showfreq() {
+       var demands    = parseFloat(document.calcfreq.demands.value);
+       var capacities = parseFloat(document.calcfreq.capacities.value);
+       document.calcfreq.result.value = calcfrequency(capacities, demands);
+     }
 
-          function calccapacity(demands, frequencies) {
-          var demands     = parseFloat(document.calccap.demands.value);
-          var frequencies = parseFloat(document.calccap.frequencies.value);
-          return demands * frequencies / sec_per_year();
-          }
+     function calccapacity(demands, frequencies) {
+       var demands     = parseFloat(document.calccap.demands.value);
+       var frequencies = parseFloat(document.calccap.frequencies.value);
+       return demands * frequencies / sec_per_year();
+     }
 
-          function showcap() {
-          var demands     = parseFloat(document.calccap.demands.value);
-          var frequencies = parseFloat(document.calccap.frequencies.value);
-          document.calccap.result.value  = calccapacity(demands, frequencies);
-          }
+     function showcap() {
+       var demands     = parseFloat(document.calccap.demands.value);
+       var frequencies = parseFloat(document.calccap.frequencies.value);
+       document.calccap.result.value  = calccapacity(demands, frequencies);
+     }
 
-          function calcrate(capacities, frequencies) {
-          return sec_per_year() * capacities / frequencies;
-          }
+     function calcrate(capacities, frequencies) {
+       return sec_per_year() * capacities / frequencies;
+     }
 
-          function showrate() {
-          var capacities  = parseFloat(document.calcrate.capacities.value);
-          var frequencies = parseFloat(document.calcrate.frequencies.value);
-          document.calcrate.result.value = calcrate(capacities, frequencies);
-          }
-          // -->
+     function showrate() {
+       var capacities  = parseFloat(document.calcrate.capacities.value);
+       var frequencies = parseFloat(document.calcrate.frequencies.value);
+       document.calcrate.result.value = calcrate(capacities, frequencies);
+     }
+     // -->
     </script>
 
     <form name="ms_per_day" class="rightalign">
@@ -183,26 +183,26 @@
         </select>
       </span>
     </form>
-      
-    
+
+
     <H2>##__title_frequency_calculation__##</H2>
     <p>##__text_frequency_calculation__##</p>
     <form name="calcfreq" action="#">
-      <span id="span_spy">730</span> × 
+      <span id="span_spy">730</span> ×
       <input type="text" name="capacities" placeholder="##__input_capacity__##">
-       ÷ 
+      ÷
       <input type="text" name="demands"    placeholder="##__input_demand__##">
-       ＝ 
+      ＝
       <button type="button" onclick="showfreq()">##__button_do_it_now__##</button>
       <input type="text" name="result"     placeholder="">
     </form>
 
-    
+
     <H2>##__title_capacity_calculation__##</H2>
     <p>##__text_capacity_calculation__##</p>
     <form name="calccap" action="#">
       <input type="text" name="demands"     placeholder="##__input_demand__##">
-       × 
+      ×
       <input type="text" name="frequencies" placeholder="##__input_frequency__##">
       ÷ <span id="span_spy">730</span>
       ＝
@@ -210,13 +210,13 @@
       <input type="text" name="result"      placeholder="">
     </form>
 
-    
+
     <H2>##__title_rate_calculation__##</H2>
     <p>##__text_rate_calculation__##</p>
     <form name="calcrate" action="#">
-      <span id="span_spy">730</span> × 
+      <span id="span_spy">730</span> ×
       <input type="text" name="capacities"  placeholder="##__input_capacity__##">
-       ÷ 
+      ÷
       <input type="text" name="frequencies" placeholder="##__input_frequency__##">
       ＝
       <button type="button" onclick="showrate()">##__button_do_it_now__##</button>
