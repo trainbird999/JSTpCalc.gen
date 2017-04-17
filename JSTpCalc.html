@@ -31,52 +31,112 @@
   </head>
   <body class="darktheme">
     <script type="text/javascript">
-      <!--
-          function sec_per_oneday() {
-          return parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
-          }
+     <!--
+     function sec_per_oneday() {
+       return parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
+     }
           
-          function sec_per_year() {
-          return sec_per_oneday() * 365;
-          }
+     function sec_per_year() {
+       return sec_per_oneday() * 365;
+     }
 
-          function calcfrequency(capacities, demands) {
-          return sec_per_year() * capacities / demands;
-          }
+     function calcfrequency(capacities, demands) {
+       return sec_per_year() * capacities / demands;
+     }
 
-          function select_elementsubset_by_id(collection, id) {
-            function selecter(collection, id, new_array, n) {
-              if (collection.length == n) {
-                return new_array;
-              } else {
-                var element = collection[n];
-                if (element.id == id) {
-                  new_array.push(element);
-                  return selecter(collection, id, new_array, n + 1);
-                }
-              }
-            }
-            return selecter(collection, id, [], 0);
-          }
+     function selectElementById(collection, id) {
+       function selecter(collection, id, new_array, n) {
+         if (collection.length == n) {
+           return new_array;
+         } else {
+           var element = collection[n];
+           if (element.id == id) {
+             new_array.push(element);
+           }
+           return selecter(collection, id, new_array, n + 1);
+         }
+       }
+       return selecter(collection, id, [], 0);
+     }
 
-          function change_text(array, str) {
-            function changer(array, str, n) {
-              if (array.length == n) {
-                return;
-              } else {
-                array[n].textContent = str;
-                return changer(array, str, n + 1);
-              }
-            }
-            console.log(array);
-            changer(array, str, 0);
-          }
+     function change_text(array, str) {
+       function changer(array, str, n) {
+         if (array.length == n) {
+           return;
+         } else {
+           array[n].textContent = str;
+           return changer(array, str, n + 1);
+         }
+       }
+       changer(array, str, 0);
+     }
 
-          function changespy(spy) {
-            var array = select_elementsubset_by_id(document.getElementsByTagName("SPAN"), "span_spy");
-            change_text(array, spy);
-          }
-          
+     function updateSpyText(spy) {
+       var array = selectElementById(document.getElementsByTagName("span"), "span_spy");
+       change_text(array, spy);
+     }
+
+     function toggler() {
+       var current = true;
+       return function() {
+         current = !current;
+         return current;
+       }
+     }
+
+     function constructSelectMenu() {
+       var newElementRoot = document.createElement("span");
+       newElementRoot.id = "target_span_menu_switch";
+       
+       var newLabel = document.createElement("label");
+       newLabel.for = "ms_value";
+       newLabel.textContent = "##__select_your_game_s_spy__## : ";
+       newElementRoot.appendChild(newLabel);
+            
+       var newSelect = document.createElement("select");
+       newSelect.id = "ms_value";
+       newSelect.name = "ms_value";
+       newSelect.onchange = function (event) {
+         return updateSpyText(sec_per_year());
+       }
+
+       function addChildOptions(targetElement, dArray) {
+         function addRec(targetElement, dArray, i) {
+           if (dArray.length == i) {
+             return;
+           } else {
+             var newOption = document.createElement("option");
+             newOption.value = dArray[i][0];
+             newOption.textContent = dArray[i][1];
+             targetElement.appendChild(newOption);
+             return addRec(targetElement, dArray, i + 1);
+           }
+         }
+         addRec(targetElement, dArray, 0);
+       }
+
+       var dArray = [["2000", "2##__sec_notation_and_default__##"],
+                     ["1000", "1##__sec_notation__##"],
+                     ["3000", "3##__sec_notation__##"],
+                     ["4000", "4##__sec_notation__##"],
+                     ["5000", "5##__sec_notation__##"],
+                     ["6000", "6##__sec_notation__##"],
+                     ["7000", "7##__sec_notation__##"],
+                     ["8000", "8##__sec_notation_and_max__##"]];
+
+       addChildOptions(newSelect, dArray);
+       newElementRoot.appendChild(newSelect);
+       return newElementRoot;
+     }
+
+     function toggleMsInputMenu(targetElement) {
+       var tOrF = toggler();
+       if (tOrF()) {
+         targetElement.parentNode.replaceChild(constructSelectMenu(), targetElement);
+       } else {
+         targetElement.parentNode.replaceChild(constructSelectMenu(), targetElement);
+       }
+     }
 
           function showfreq() {
           var demands    = parseFloat(document.calcfreq.demands.value);
@@ -108,9 +168,10 @@
           // -->
     </script>
 
-      <form name="ms_per_day" class="rightalign">
-        <label   for="ms_choosen">##__select_your_game_s_spy__##</label>
-        <select name="ms_value" onChange="changespy(sec_per_year())">
+    <form name="ms_per_day" class="rightalign">
+      <span id="target_span_menu_switch">
+        <label   for="ms_value">##__select_your_game_s_spy__##</label>
+        <select name="ms_value" id="ms_value" onChange="updateSpyText(sec_per_year())">
           <option value="2000">2##__sec_notation_and_default__##</option>
           <option value="1000">1##__sec_notation__##</option>
           <option value="3000">3##__sec_notation__##</option>
@@ -120,7 +181,8 @@
           <option value="7000">7##__sec_notation__##</option>
           <option value="8000">8##__sec_notation__##</option>
         </select>
-      </form>
+      </span>
+    </form>
       
     
     <H2>##__title_frequency_calculation__##</H2>
