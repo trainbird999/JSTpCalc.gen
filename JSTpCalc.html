@@ -32,9 +32,9 @@
   <body class="darktheme">
     <script type="text/javascript">
      <!--
-                                   function sec_per_oneday() {
-                                     return parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
-                                   }
+     function sec_per_oneday() {
+       return parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
+     }
 
      function sec_per_year() {
        return sec_per_oneday() * 365;
@@ -59,7 +59,7 @@
        return selecter(collection, id, [], 0);
      }
 
-     function change_text(array, str) {
+     function changeText(array, str) {
        function changer(array, str, n) {
          if (array.length == n) {
            return;
@@ -73,10 +73,11 @@
 
      function updateSpyText(spy) {
        var array = selectElementById(document.getElementsByTagName("span"), "span_spy");
-       change_text(array, spy);
+       changeText(array, spy);
      }
 
-     function toggler() {
+
+     function oscillationBool() {
        var current = true;
        return function() {
          current = !current;
@@ -84,53 +85,84 @@
        }
      }
 
-     function constructSelectMenu() {
-       var newElementRoot = document.createElement("span");
-       newElementRoot.id = "target_span_menu_switch";
+     function newSpan(id) {
+       var newSpan           = document.createElement("span");
+       newSpan.id     = id;
+       return newSpan;
+     }
 
-       var newLabel = document.createElement("label");
-       newLabel.for = "ms_value";
-       newLabel.textContent = "##__select_your_game_s_spy__## : ";
-       newElementRoot.appendChild(newLabel);
+     function newLabel(forId, text) {
+       var newLabel          = document.createElement("label");
+       newLabel.for          = forId;
+       newLabel.textContent  = text;
+       return newLabel;
+     }
+     function newSelect(id, name, func) {
+       var newSelect         = document.createElement("select");
+       newSelect.id          = id;
+       newSelect.name        = name;
+       newSelect.onchange    = func;
+       return newSelect;
+     }
 
-       var newSelect = document.createElement("select");
-       newSelect.id = "ms_value";
-       newSelect.name = "ms_value";
-       newSelect.onchange = function (event) {
-         return updateSpyText(sec_per_year());
+     function newOption(value, text) {
+       var newOption         = document.createElement("option");
+       newOption.value       = value;
+       newOption.textContent = text;
+       return newOption;
+     }
+
+     function addChildRecursively(parentElement, elementGenerator) {
+       var newElement = elementGenerator();
+       if (newElement == null) {
+         return;
+       } else {
+         parentElement.appendChild(newElement);
+         return addChildRecursively(parentElement, elementGenerator);
        }
+     }
 
-       function addChildOptions(targetElement, dArray) {
-         function addRec(targetElement, dArray, i) {
-           if (dArray.length == i) {
-             return;
+
+     function constructSelectMenu() {
+       var newElementRoot = newSpan("target_span_menu_switch");
+
+       var label       = newLabel("ms_value", "##__select_your_game_s_spy__## : ");
+       newElementRoot.appendChild(label);
+
+       var select      = newSelect("ms_value",
+                                      "ms_value",
+                                      function(event) {
+                                        return updateSpyText(sec_per_year());
+                                      });
+       newElementRoot.appendChild(select);
+         
+       function optionGen() {
+         var dArray = [["2000", "2##__sec_notation_and_default__##"],
+                       ["1000", "1##__sec_notation__##"],
+                       ["3000", "3##__sec_notation__##"],
+                       ["4000", "4##__sec_notation__##"],
+                       ["5000", "5##__sec_notation__##"],
+                       ["6000", "6##__sec_notation__##"],
+                       ["7000", "7##__sec_notation__##"],
+                       ["8000", "8##__sec_notation_and_max__##"]];
+         var index  = 0;
+         var fGen   = function() {
+           if (index == dArray.length) {
+             return null;
            } else {
-             var newOption = document.createElement("option");
-             newOption.value = dArray[i][0];
-             newOption.textContent = dArray[i][1];
-             targetElement.appendChild(newOption);
-             return addRec(targetElement, dArray, i + 1);
+             var option = newOption(dArray[index][0], dArray[index][1]);
+             index = index + 1;
+             return option;
            }
          }
-         addRec(targetElement, dArray, 0);
+         return fGen;
        }
-
-       var dArray = [["2000", "2##__sec_notation_and_default__##"],
-                     ["1000", "1##__sec_notation__##"],
-                     ["3000", "3##__sec_notation__##"],
-                     ["4000", "4##__sec_notation__##"],
-                     ["5000", "5##__sec_notation__##"],
-                     ["6000", "6##__sec_notation__##"],
-                     ["7000", "7##__sec_notation__##"],
-                     ["8000", "8##__sec_notation_and_max__##"]];
-
-       addChildOptions(newSelect, dArray);
-       newElementRoot.appendChild(newSelect);
+       addChildRecursively(select, optionGen());
        return newElementRoot;
      }
 
      function toggleMsInputMenu(targetElement) {
-       var tOrF = toggler();
+       var tOrF = oscillationBool();
        if (tOrF()) {
          targetElement.parentNode.replaceChild(constructSelectMenu(), targetElement);
        } else {
@@ -145,8 +177,6 @@
      }
 
      function calccapacity(demands, frequencies) {
-       var demands     = parseFloat(document.calccap.demands.value);
-       var frequencies = parseFloat(document.calccap.frequencies.value);
        return demands * frequencies / sec_per_year();
      }
 
