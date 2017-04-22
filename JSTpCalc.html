@@ -40,11 +40,7 @@
        return sec_per_oneday() * 365;
      }
 
-     function calcfrequency(capacities, demands) {
-       return sec_per_year() * capacities / demands;
-     }
-
-     function selectElementById(collection, id) {
+     function selectElementsById(collection, id) {
        function selecter(collection, id, new_array, n) {
          if (collection.length == n) {
            return new_array;
@@ -72,7 +68,7 @@
      }
 
      function updateSpyText(spy) {
-       var array = selectElementById(document.getElementsByTagName("span"), "span_spy");
+       var array = selectElementsById(document.getElementsByTagName("span"), "span_spy");
        changeText(array, spy);
      }
 
@@ -168,6 +164,11 @@
        } else {
          targetElement.parentNode.replaceChild(constructSelectMenu(), targetElement);
        }
+     }
+
+
+     function calcfrequency(capacities, demands) {
+       return sec_per_year() * capacities / demands;
      }
 
      function showfreq() {
