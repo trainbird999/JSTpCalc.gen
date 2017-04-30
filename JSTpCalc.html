@@ -93,11 +93,11 @@
        newLabel.textContent  = text;
        return newLabel;
      }
-     function newSelect(id, name, func) {
+     function newSelect(id, name, fonchange) {
        var newSelect         = document.createElement("select");
        newSelect.id          = id;
        newSelect.name        = name;
-       newSelect.onchange    = func;
+       newSelect.onchange    = fonchange;
        return newSelect;
      }
 
@@ -107,6 +107,41 @@
        newOption.textContent = text;
        return newOption;
      }
+
+     function newInputForm(type, name, placeholder, foninput) {
+       var newInputForm         = document.createElement("input");
+       newInputForm.type        = type;
+       newInputForm.name        = name;
+       newInputForm.placeholder = placeholder;
+       newInputForm.oninput     = foninput;
+       newInputForm.onkeydown     = function() {return null};
+       return newInputForm;
+     }
+
+     function newDummyInputForm() {
+       var newInputForm         = document.createElement("input");
+       newInputForm.type        = "input";
+       newInputForm.name        = "dummyinput";
+       newInputForm.style       = "display:none;";
+       return newInputForm;
+     }
+
+     function newLink(text, fonclick) {
+       var newLink         = document.createElement("a");
+       newLink.textContent = text;
+       newLink.href        = "javascript void(0)";
+       newLink.onclick     = fonclick;
+       return newLink;
+     }
+     function modeSelectElement() {
+       var element = newLink(" ##__toogle_mode__## ",
+                          function() {
+                            toggleMsInputMenu(document.getElementById("target_span_menu_switch"));
+                            return false;
+                          });
+       return element;
+     }
+
 
      function addChildRecursively(parentElement, elementGenerator) {
        var newElement = elementGenerator();
@@ -122,10 +157,10 @@
      function constructSelectMenu() {
        var newElementRoot = newSpan("target_span_menu_switch");
 
-       var label       = newLabel("ms_value", "##__select_your_game_s_spy__## : ");
+       var label          = newLabel("ms_value", "##__select_your_game_s_spy__## : ");
        newElementRoot.appendChild(label);
 
-       var select      = newSelect("ms_value",
+       var select         = newSelect("ms_value",
                                       "ms_value",
                                       function(event) {
                                         return updateSpyText(sec_per_year());
@@ -154,15 +189,38 @@
          return fGen;
        }
        addChildRecursively(select, optionGen());
+
+       newElementRoot.appendChild(modeSelectElement());
+       
        return newElementRoot;
      }
 
+     function constructInputMenu() {
+       var newElementRoot = newSpan("target_span_menu_switch");
+
+       var label          = newLabel("ms_value", "##__input_your_game_s_spy__## : ");
+       newElementRoot.appendChild(label);
+
+       var inputForm      = newInputForm("text",
+                                         "ms_value",
+                                         "##__input_here__##",
+                                         function(event) {
+                                           return updateSpyText(sec_per_year());
+                                         });
+       
+       newElementRoot.appendChild(inputForm);
+       newElementRoot.appendChild(newDummyInputForm()); // avoid text subbmission
+       newElementRoot.appendChild(modeSelectElement());
+       
+       return newElementRoot;
+     }
+
+     var tOrF = oscillationBool();
      function toggleMsInputMenu(targetElement) {
-       var tOrF = oscillationBool();
        if (tOrF()) {
          targetElement.parentNode.replaceChild(constructSelectMenu(), targetElement);
        } else {
-         targetElement.parentNode.replaceChild(constructSelectMenu(), targetElement);
+         targetElement.parentNode.replaceChild(constructInputMenu(), targetElement);
        }
      }
 
