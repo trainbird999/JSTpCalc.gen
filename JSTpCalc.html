@@ -123,19 +123,29 @@
        }
      }
 
-
+     /*
+        Selecting Menu tags hierarchy **
+        <span>
+          <label>
+          <select>
+            <Option>
+            ...
+            <Option>
+          <label> // <- a link toggole switch
+        ** END
+     */
      const constructSelectMenu = () => {
-       let newElementRoot = newSpan("target_span_menu_switch");
+       let newElementRoot = newSpan("target_span_menu_switch");                        // <span>
 
-       let label          = newLabel("ms_value", "##__select_your_game_s_spy__## : ");
+       let label          = newLabel("ms_value", "##__select_your_game_s_spy__## : "); // <label>
        newElementRoot.appendChild(label);
 
-       let select         = newSelect("ms_value",
+       let select         = newSelect("ms_value",                                      // <select>
                                       "ms_value",
                                       (event) => updateSpyText(sec_per_year()));
        newElementRoot.appendChild(select);
          
-       const optionGenerator = () => {
+       const optionGenerator = () => { /* Closure */                                   // <option>
          const dArray = [["2000", "2##__sec_notation_and_default__##"],
                          ["1000", "1##__sec_notation__##"],
                          ["3000", "3##__sec_notation__##"],
@@ -163,19 +173,28 @@
        return newElementRoot;
      }
 
+     /*
+        Inputing menu tags hierarchy **
+        <span>
+          <label>
+          <input>
+          <input> // dummy for avoidance of submission
+          <label> // <- a link toggle switch
+        ** END
+     */
      const constructInputMenu = () => {
-       let newElementRoot = newSpan("target_span_menu_switch");
+       let newElementRoot = newSpan("target_span_menu_switch");                       // <span>
 
-       let label          = newLabel("ms_value", "##__input_your_game_s_spy__## : ");
+       let label          = newLabel("ms_value", "##__input_your_game_s_spy__## : "); // <label>
        newElementRoot.appendChild(label);
 
-       let inputForm      = newInputForm("text",
+       let inputForm      = newInputForm("text",                                      // <input>
                                          "ms_value",
                                          "##__input_here__##",
                                          (event) => updateSpyText(sec_per_year()));
        
        newElementRoot.appendChild(inputForm);
-       newElementRoot.appendChild(newDummyInputForm()); // avoid text subbmission
+       newElementRoot.appendChild(newDummyInputForm());                               // d<input>#dummy
        newElementRoot.appendChild(modeSelectElement());
        
        return newElementRoot;
