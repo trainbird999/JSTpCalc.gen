@@ -32,28 +32,8 @@
   <body class="darktheme">
     <script type="text/javascript">
      <!--
-     function sec_per_oneday() {
-       return parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
-     }
-
-     function sec_per_year() {
-       return sec_per_oneday() * 365;
-     }
-
-     function selectElementsById(collection, id) {
-       function selecter(collection, id, new_array, n) {
-         if (collection.length == n) {
-           return new_array;
-         } else {
-           var element = collection[n];
-           if (element.id == id) {
-             new_array.push(element);
-           }
-           return selecter(collection, id, new_array, n + 1);
-         }
-       }
-       return selecter(collection, id, [], 0);
-     }
+     const sec_per_oneday = () => parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
+     const sec_per_year   = () => sec_per_oneday() * 365;
 
      function changeText(array, str) {
        function changer(array, str, n) {
@@ -68,83 +48,86 @@
      }
 
      function updateSpyText(spy) {
-       var array = selectElementsById(document.getElementsByTagName("span"), "span_spy");
-       changeText(array, spy);
+       let array    = Array.from(document.getElementsByTagName("span"));
+       let selected = array.filter((e) => e.id == "span_spy");
+       changeText(selected, spy);
      }
 
 
-     function oscillationBool() {
-       var current = true;
-       return function() {
+     const oscillationBool = (bool) => {
+       let current = !bool;
+       return () => {
          current = !current;
          return current;
        }
      }
 
-     function newSpan(id) {
-       var newSpan           = document.createElement("span");
-       newSpan.id     = id;
+     const newSpan = (id) => {
+       let newSpan           = document.createElement("span");
+       newSpan.id            = id;
        return newSpan;
      }
 
-     function newLabel(forId, text) {
-       var newLabel          = document.createElement("label");
+     const newLabel = (forId, text) => {
+       let newLabel          = document.createElement("label");
        newLabel.for          = forId;
        newLabel.textContent  = text;
        return newLabel;
      }
-     function newSelect(id, name, fonchange) {
-       var newSelect         = document.createElement("select");
+     
+     const newSelect = (id, name, fonchange) => {
+       let newSelect         = document.createElement("select");
        newSelect.id          = id;
        newSelect.name        = name;
        newSelect.onchange    = fonchange;
        return newSelect;
      }
 
-     function newOption(value, text) {
-       var newOption         = document.createElement("option");
+     const newOption = (value, text) => {
+       let newOption         = document.createElement("option");
        newOption.value       = value;
        newOption.textContent = text;
        return newOption;
      }
 
-     function newInputForm(type, name, placeholder, foninput) {
-       var newInputForm         = document.createElement("input");
+     const newInputForm = (type, name, placeholder, foninput) => {
+       let newInputForm         = document.createElement("input");
        newInputForm.type        = type;
        newInputForm.name        = name;
        newInputForm.placeholder = placeholder;
        newInputForm.oninput     = foninput;
-       newInputForm.onkeydown     = function() {return null};
+       newInputForm.onkeydown   = () => null;
        return newInputForm;
      }
 
-     function newDummyInputForm() {
-       var newInputForm         = document.createElement("input");
+     const newDummyInputForm = () => {
+       let newInputForm         = document.createElement("input");
        newInputForm.type        = "input";
        newInputForm.name        = "dummyinput";
        newInputForm.style       = "display:none;";
        return newInputForm;
      }
 
-     function newLink(text, fonclick) {
-       var newLink         = document.createElement("a");
+     const newLink = (text, fonclick) => {
+       let newLink         = document.createElement("a");
        newLink.textContent = text;
        newLink.href        = "javascript void(0)";
        newLink.onclick     = fonclick;
        return newLink;
      }
-     function modeSelectElement() {
-       var element = newLink(" ##__toogle_mode__## ",
-                          function() {
-                            toggleMsInputMenu(document.getElementById("target_span_menu_switch"));
-                            return false;
-                          });
+
+     const modeSelectElement = () => {
+       let element = newLink(" ##__toggle_mode__## ",
+                             () => {
+                               toggleMsInputMenu(document.getElementById("target_span_menu_switch"));
+                               return false; // avoid document index jump with "#" like "foo.html#"
+                             });
        return element;
      }
 
 
-     function addChildRecursively(parentElement, elementGenerator) {
-       var newElement = elementGenerator();
+     const addChildRecursively = (parentElement, elementGenerator) => {
+       let newElement = elementGenerator();
        if (newElement == null) {
          return;
        } else {
@@ -154,34 +137,32 @@
      }
 
 
-     function constructSelectMenu() {
-       var newElementRoot = newSpan("target_span_menu_switch");
+     const constructSelectMenu = () => {
+       let newElementRoot = newSpan("target_span_menu_switch");
 
-       var label          = newLabel("ms_value", "##__select_your_game_s_spy__## : ");
+       let label          = newLabel("ms_value", "##__select_your_game_s_spy__## : ");
        newElementRoot.appendChild(label);
 
-       var select         = newSelect("ms_value",
+       let select         = newSelect("ms_value",
                                       "ms_value",
-                                      function(event) {
-                                        return updateSpyText(sec_per_year());
-                                      });
+                                      (event) => updateSpyText(sec_per_year()));
        newElementRoot.appendChild(select);
          
-       function optionGen() {
-         var dArray = [["2000", "2##__sec_notation_and_default__##"],
-                       ["1000", "1##__sec_notation__##"],
-                       ["3000", "3##__sec_notation__##"],
-                       ["4000", "4##__sec_notation__##"],
-                       ["5000", "5##__sec_notation__##"],
-                       ["6000", "6##__sec_notation__##"],
-                       ["7000", "7##__sec_notation__##"],
-                       ["8000", "8##__sec_notation_and_max__##"]];
-         var index  = 0;
-         var fGen   = function() {
+       const optionGen = () => {
+         const dArray = [["2000", "2##__sec_notation_and_default__##"],
+                         ["1000", "1##__sec_notation__##"],
+                         ["3000", "3##__sec_notation__##"],
+                         ["4000", "4##__sec_notation__##"],
+                         ["5000", "5##__sec_notation__##"],
+                         ["6000", "6##__sec_notation__##"],
+                         ["7000", "7##__sec_notation__##"],
+                         ["8000", "8##__sec_notation_and_max__##"]];
+         let index    = 0;
+         let fGen     = () => {
            if (index == dArray.length) {
              return null;
            } else {
-             var option = newOption(dArray[index][0], dArray[index][1]);
+             let option = newOption(dArray[index][0], dArray[index][1]);
              index = index + 1;
              return option;
            }
@@ -195,18 +176,16 @@
        return newElementRoot;
      }
 
-     function constructInputMenu() {
-       var newElementRoot = newSpan("target_span_menu_switch");
+     const constructInputMenu = () => {
+       let newElementRoot = newSpan("target_span_menu_switch");
 
-       var label          = newLabel("ms_value", "##__input_your_game_s_spy__## : ");
+       let label          = newLabel("ms_value", "##__input_your_game_s_spy__## : ");
        newElementRoot.appendChild(label);
 
-       var inputForm      = newInputForm("text",
+       let inputForm      = newInputForm("text",
                                          "ms_value",
                                          "##__input_here__##",
-                                         function(event) {
-                                           return updateSpyText(sec_per_year());
-                                         });
+                                         (event) => updateSpyText(sec_per_year()));
        
        newElementRoot.appendChild(inputForm);
        newElementRoot.appendChild(newDummyInputForm()); // avoid text subbmission
@@ -215,7 +194,7 @@
        return newElementRoot;
      }
 
-     var tOrF = oscillationBool();
+     const tOrF = oscillationBool(true);
      function toggleMsInputMenu(targetElement) {
        if (tOrF()) {
          targetElement.parentNode.replaceChild(constructSelectMenu(), targetElement);
@@ -225,33 +204,27 @@
      }
 
 
-     function calcfrequency(capacities, demands) {
-       return sec_per_year() * capacities / demands;
-     }
+     const calcfrequency = (capacities, demands) => sec_per_year() * capacities / demands;
 
      function showfreq() {
-       var demands    = parseFloat(document.calcfreq.demands.value);
-       var capacities = parseFloat(document.calcfreq.capacities.value);
+       let demands    = parseFloat(document.calcfreq.demands.value);
+       let capacities = parseFloat(document.calcfreq.capacities.value);
        document.calcfreq.result.value = calcfrequency(capacities, demands);
      }
 
-     function calccapacity(demands, frequencies) {
-       return demands * frequencies / sec_per_year();
-     }
+     const calccapacity = (demands, frequencies) => demands * frequencies / sec_per_year();
 
      function showcap() {
-       var demands     = parseFloat(document.calccap.demands.value);
-       var frequencies = parseFloat(document.calccap.frequencies.value);
+       let demands     = parseFloat(document.calccap.demands.value);
+       let frequencies = parseFloat(document.calccap.frequencies.value);
        document.calccap.result.value  = calccapacity(demands, frequencies);
      }
 
-     function calcrate(capacities, frequencies) {
-       return sec_per_year() * capacities / frequencies;
-     }
+     const calcrate = (capacities, frequencies) => sec_per_year() * capacities / frequencies;
 
      function showrate() {
-       var capacities  = parseFloat(document.calcrate.capacities.value);
-       var frequencies = parseFloat(document.calcrate.frequencies.value);
+       let capacities  = parseFloat(document.calcrate.capacities.value);
+       let frequencies = parseFloat(document.calcrate.frequencies.value);
        document.calcrate.result.value = calcrate(capacities, frequencies);
      }
      // -->
@@ -259,17 +232,7 @@
 
     <form name="ms_per_day" class="rightalign">
       <span id="target_span_menu_switch">
-        <label   for="ms_value">##__select_your_game_s_spy__##</label>
-        <select name="ms_value" id="ms_value" onChange="updateSpyText(sec_per_year())">
-          <option value="2000">2##__sec_notation_and_default__##</option>
-          <option value="1000">1##__sec_notation__##</option>
-          <option value="3000">3##__sec_notation__##</option>
-          <option value="4000">4##__sec_notation__##</option>
-          <option value="5000">5##__sec_notation__##</option>
-          <option value="6000">6##__sec_notation__##</option>
-          <option value="7000">7##__sec_notation__##</option>
-          <option value="8000">8##__sec_notation__##</option>
-        </select>
+        <script>toggleMsInputMenu(document.getElementById("target_span_menu_switch"));</script>
       </span>
     </form>
 
