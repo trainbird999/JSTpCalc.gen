@@ -35,40 +35,27 @@
      const sec_per_oneday = () => parseFloat(document.ms_per_day.ms_value.value) / 1000.0;
      const sec_per_year   = () => sec_per_oneday() * 365;
 
-     function changeText(array, str) {
-       function changer(array, str, n) {
-         if (array.length == n) {
-           return;
-         } else {
-           array[n].textContent = str;
-           return changer(array, str, n + 1);
-         }
-       }
-       changer(array, str, 0);
-     }
-
      function updateSpyText(spy) {
        let array    = Array.from(document.getElementsByTagName("span"));
        let selected = array.filter((e) => e.id == "span_spy");
-       changeText(selected, spy);
+       selected.forEach((e) => e.textContent = spy);
      }
 
-
-     const oscillationBool = (bool) => {
-       let current = !bool;
+     const oscillationBool = (initBool) => {
+       let current = !initBool;
        return () => {
          current = !current;
          return current;
        }
      }
 
-     const newSpan = (id) => {
+     const newSpan   = (id) => {
        let newSpan           = document.createElement("span");
        newSpan.id            = id;
        return newSpan;
      }
 
-     const newLabel = (forId, text) => {
+     const newLabel  = (forId, text) => {
        let newLabel          = document.createElement("label");
        newLabel.for          = forId;
        newLabel.textContent  = text;
@@ -120,7 +107,7 @@
        let element = newLink(" ##__toggle_mode__## ",
                              () => {
                                toggleMsInputMenu(document.getElementById("target_span_menu_switch"));
-                               return false; // avoid document index jump with "#" like "foo.html#"
+                               return false; // avoid document table jump with "#" like "foo.html#"
                              });
        return element;
      }
@@ -148,7 +135,7 @@
                                       (event) => updateSpyText(sec_per_year()));
        newElementRoot.appendChild(select);
          
-       const optionGen = () => {
+       const optionGenerator = () => {
          const dArray = [["2000", "2##__sec_notation_and_default__##"],
                          ["1000", "1##__sec_notation__##"],
                          ["3000", "3##__sec_notation__##"],
@@ -169,7 +156,7 @@
          }
          return fGen;
        }
-       addChildRecursively(select, optionGen());
+       addChildRecursively(select, optionGenerator());
 
        newElementRoot.appendChild(modeSelectElement());
        
