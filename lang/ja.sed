@@ -1,3 +1,5 @@
+## for version 1.0
+
 s/##__title_frequency_calculation__##/頻度演算/
 s/##__text_frequency_calculation__##/\
       需要と一台あたりの貨物容量から理想的な運行頻度を算出します。<BR>\
@@ -27,3 +29,13 @@ s/##__input_demand__##/需要(和)を入力/g
 s/##__input_capacity__##/貨物容量を入力/g
 s/##__input_frequency__##/運行頻度\(秒\)を入力/g
 s/##__button_do_it_now__##/算出/g
+
+## for version 1.1
+
+s/##__input_here__##/数値を入力(ミリ秒)/
+s/##__input_your_game_s_spy__##/ゲーム上の1日の時間を入力して下さい。知らない場合はこの項目は無視して下さい。/
+s/##__sec_notation__##/秒/g
+s/##__sec_notation_and_default__##/秒(デフォルト)/
+s/##__sec_notation_and_max__##/秒(最大)/
+s/##__select_your_game_s_spy__##/ゲーム上の1日の時間を選択して下さい。知らない場合はこの項目は無視して下さい。/
+s/##__toggle_mode__##/入力モード切り替え/

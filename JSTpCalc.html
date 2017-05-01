@@ -25,7 +25,8 @@
      button:hover {background: #ffc618;}
      input {background: #3e4a60; color: #d89ed2; font-size: 101%; text-align: center; border-style: none;}
      body.darktheme {color: #eeeeee;background: #2e3a50;}
-     form.rightalign {text-align: right};
+     form.rightalign {text-align: right;}
+     a.link {color: #d89ed2;}
      -->
     </style>
   </head>
@@ -95,11 +96,12 @@
        return newInputForm;
      }
 
-     const newLink = (text, fonclick) => {
+     const newLink = (text, fonclick, styleName) => {
        let newLink         = document.createElement("a");
        newLink.textContent = text;
        newLink.href        = "javascript void(0)";
        newLink.onclick     = fonclick;
+       newLink.className   = (!(styleName == undefined))? styleName : undefined;
        return newLink;
      }
 
@@ -108,7 +110,8 @@
                              () => {
                                toggleMsInputMenu(document.getElementById("target_span_menu_switch"));
                                return false; // avoid document table jump with "#" like "foo.html#"
-                             });
+                             },
+                             "link");
        return element;
      }
 
